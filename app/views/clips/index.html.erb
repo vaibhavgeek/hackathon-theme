@@ -1,0 +1,144 @@
+
+
+
+
+<div class="col-md-6 col-xs-12 col-md-offset-3 panel">
+<%= form_for :clip , url: vacation_clips_path(:vacation_id => params[:vacation_id]) , html: { multipart: true } do |f| %>
+
+     <%= f.file_field :image %>
+
+<%= f.submit "Post" , class: "btn btn-large btn-success pull-right" %>
+<% end %>
+<style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 600px;
+        
+      }
+      /* Optional: Makes the sample page fill the window. */
+      
+      
+      #type-selector {
+        display: none;
+        font-family: Roboto;
+      }
+
+    </style>
+<div id="map"></div>
+    <script>
+      // This example requires the Places library. Include the libraries=places
+      // parameter when you first load the API. For example:
+      // <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
+     
+ var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+      var labelIndex = 0;
+
+var map;
+      function initMap() {
+        var directionsService = new google.maps.DirectionsService;
+        var directionsDisplay = new google.maps.DirectionsRenderer;
+        
+
+         map = new google.maps.Map(document.getElementById('map'), {
+          center: {lat: -33.8688, lng: 151.2195},
+          zoom: 13
+        });
+        directionsDisplay.setMap(map);
+
+        google.maps.event.addListener(map, 'click', function(event) {
+         marker =  addMarker(event.latLng, map);
+          var scale = Math.pow(2, map.getZoom());
+var nw = new google.maps.LatLng(
+    map.getBounds().getNorthEast().lat(),
+    map.getBounds().getSouthWest().lng()
+);
+var worldCoordinateNW = map.getProjection().fromLatLngToPoint(nw);
+var worldCoordinate = map.getProjection().fromLatLngToPoint(marker.getPosition());
+var pixelOffset = new google.maps.Point(
+    Math.floor((worldCoordinate.x - worldCoordinateNW.x) * scale),
+    Math.floor((worldCoordinate.y - worldCoordinateNW.y) * scale)
+);
+$('#danger').tooltip('show')
+console.log(pixelOffset);
+        });
+
+       
+
+
+
+        var input = /** @type {!HTMLInputElement} */(
+            document.getElementById('pac-input'));
+
+       
+
+        var autocomplete = new google.maps.places.Autocomplete(input);
+        autocomplete.bindTo('bounds', map);
+
+        var infowindow = new google.maps.InfoWindow();
+
+          
+
+
+        autocomplete.addListener('place_changed', function() {
+          infowindow.close();
+          var place = autocomplete.getPlace();
+          if (!place.geometry) {
+            // User entered the name of a Place that was not suggested and
+            // pressed the Enter key, or the Place Details request failed.
+            window.alert("No details available for input: '" + place.name + "'");
+            return;
+          }
+
+          // If the place has a geometry, then present it on a map.
+          if (place.geometry.viewport) {
+            map.fitBounds(place.geometry.viewport);
+          } else {
+            map.setCenter(place.geometry.location);
+            map.setZoom(17);  // Why 17? Because it looks good.
+          }
+          
+          //place.geometry.location
+         // console.log(place.geometry.location);
+        });
+
+        // Sets a listener on a radio button to change the filter type on Places
+        // Autocomplete.
+       
+
+      
+      }
+
+       function addMarker(location, map) {
+        // Add the marker at the clicked location, and add the next-available label
+        // from the array of alphabetical characters.
+        var marker = new google.maps.Marker({
+          position: location,
+          label: labels[labelIndex++ % labels.length],
+          map: map
+        });
+        return marker
+         // infowindow.setContent("<%= j render 'vacations/_partials/photo_feild.html.erb' %>");
+          //infowindow.open(map, marker);
+      }
+
+      function calculateAndDisplayRoute(directionsService, directionsDisplay, origin , destination) {
+        directionsService.route({
+          origin: origin,
+          destination: destination,
+          travelMode: 'DRIVING'
+        }, function(response, status) {
+          if (status === 'OK') {
+            directionsDisplay.setDirections(response);
+          } else {
+            window.alert('Directions request failed due to ' + status);
+          }
+        });
+      }
+
+            google.maps.event.addDomListener(window, 'load', initialize);
+
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDdIEvML4-I3Hs08cbmWc-GbXFyF-gMIj0&libraries=places&callback=initMap"
+        async defer></script>
+        </div>

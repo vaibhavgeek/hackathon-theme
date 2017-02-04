@@ -3,15 +3,60 @@
 
       <% if !current_user %>
 
-      <div class="col-md-3 col-md-offset-4 panel well">
+      <div class="col-md-3 col-xs-8 col-xs-offset-2 col-md-offset-4 panel well">
 
       <%= render "home/partials/login" %>
 
       </div>
+<% else %> 
+      <div class="col-md-6 col-xs-12 col-md-offset-3 panel well">
+      <div class="col-md-2 col-xs-2">
+      <div class="btn-group-vertical" role="group" aria-label="Vertical button group">
 
-      <div class="col-md-3 col-md-offset-1 panel well"> 
-            <%= render "home/partials/signup" %>
+       <button type="button"  data-toggle="tooltip" data-placement="right" title="Browse Locations" class="btn btn-default">
+       	<i class="glyphicon glyphicon-road"> </i>
 
-      </div>
+       </button> 
+
+ <%= link_to new_vacation_path , :class => "btn btn-default" , :"data-toggle" => "tooltip" , :"data-placement" => "right" , :title => "New Phony" do %>
+<i class="glyphicon glyphicon-plus"> </i>
+ <% end %>
+ 
+
+
+              
+       
+        </div>
+        </div>
+        <div class="col-ms-10 col-xs-10">
+        
+<div id="loader">
+       <%= render "home/partials/browse" %>
+
+</div>       
+<% if @places.count > 0 %> 
+<br/>
+<% @places.each do |place| %> 
+<%= link_to vacation_path(place) do %>
+<div class="col-md-6">
+<%= image_tag place.avatar.url , :class => "img-responsive" %> <br/>
+<p class="text-muted"> <%= place.description %> </p>
+
+</div>
+<% end %>
+<% end %>
+
 
 <% end %>
+
+ </div>
+</div>
+<% end %>
+
+
+</div>
+        <script type="text/javascript">
+        	$(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+});
+        </script>

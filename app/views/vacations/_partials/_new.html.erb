@@ -1,0 +1,241 @@
+<div class="col-md-6 col-xs-12 col-md-offset-3 panel">
+
+<style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 600px;
+        
+      }
+      #wrapper { position: relative; }
+     .overmap { display: none; height: 140px; width: 200px; position: absolute; top:200px; left: 10px; z-index: 99; background-color: white; border: 2px solid black; padding: 7px; }
+      /* Optional: Makes the sample page fill the window. */
+      
+      
+      #type-selector {
+        display: none;
+        font-family: Roboto;
+      }
+
+    </style>
+
+
+ <%= form_for @vacation do |f| %>
+
+<%= f.text_field :location_city , :id =>"pac-input" , :class => 'form-control'  , :type => "text" , :placeholder => "Enter the Name of Travel Location (Main)" %>
+
+          <%= f.text_area :description  , :class => 'form-control'  , :type => "text" , :placeholder => "How was the overall expreice" %>
+          <button type="button" class="btn btn-default pull-right" onclick="clearMarker();"> 
+          <i onclick="clearMarker();" class="glyphicon glyphicon-minus"> </i>
+          </button>
+          <br/><br/>  <%= f.text_field :locations , :id => "appending" , :class => 'form-control'  , :type => "text" , :style => "display:none;" , :placeholder => "The Locations" %>
+         
+<div id="wrapper">
+    <div id="map"></div>
+    </div>
+
+ <div class="overmap" id="over_map">  </div>   
+  
+ <div class="overmap" id="over_map1">  </div>   
+  
+ <div class="overmap" id="over_map2">  </div>   
+  
+ <div class="overmap" id="over_map3">  </div>   
+  
+ <div class="overmap" id="over_map4">  </div>   
+
+ <div class="overmap" id="over_map5">  </div>   
+
+ <div class="overmap" id="over_map5">  </div>   
+
+    <script>
+      // This example requires the Places library. Include the libraries=places
+      // parameter when you first load the API. For example:
+      // <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
+     
+ var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+      var labelIndex = 0;
+var markers = [];
+var map;
+      var poly;
+
+      function initMap() {
+        var directionsService = new google.maps.DirectionsService;
+        var directionsDisplay = new google.maps.DirectionsRenderer;
+        
+
+         map = new google.maps.Map(document.getElementById('map'), {
+          center: {lat: 12.9698479, lng: 79.1555855},
+          zoom: 13
+        });
+
+          poly = new google.maps.Polyline({
+          strokeColor: '#000000',
+          strokeOpacity: 1.0,
+          strokeWeight: 3
+        });
+        poly.setMap(map);
+        
+
+         input = document.getElementById("images")
+         map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+
+        directionsDisplay.setMap(map);
+
+        google.maps.event.addListener(map, 'click', function(event) {
+                  var path = poly.getPath();
+ path.push(event.latLng);
+         marker =  addMarker(event.latLng, map);
+         var bla = $('#appending').val();
+         $("#appending").val(bla + event.latLng.lat() + "|" + event.latLng.lng() + "||"  )
+         console.log(event.latLng.lat());
+          console.log(event.latLng.lng());
+
+          var scale = Math.pow(2, map.getZoom());
+var nw = new google.maps.LatLng(
+    map.getBounds().getNorthEast().lat(),
+    map.getBounds().getSouthWest().lng()
+);
+var worldCoordinateNW = map.getProjection().fromLatLngToPoint(nw);
+var worldCoordinate = map.getProjection().fromLatLngToPoint(marker.getPosition());
+var pixelOffset = new google.maps.Point(
+    Math.floor((worldCoordinate.x - worldCoordinateNW.x) * scale),
+    Math.floor((worldCoordinate.y - worldCoordinateNW.y) * scale)
+);
+$(".overmap").css("display" , "none");
+
+switch(labelIndex)
+{
+case 1:
+$("#over_map").css({"top": pixelOffset.y - 70 , "left" : pixelOffset.x , "display" : "block" });
+$("#over_map").html(" <%= j f.file_field :avatar %> Tell us something about the location? <%= j f.text_area :avatar_desc , :class => "form-control" %>   ");
+break;
+
+case 2:
+$("#over_map1").css({"top": pixelOffset.y - 70 , "left" : pixelOffset.x , "display" : "block" });
+$("#over_map1").html("<%= j f.file_field :avatar1 %>  Tell us something about the location? <%= j f.text_area :avatar1_desc , :class => "form-control" %> ");
+break;
+
+case 3:
+$("#over_map2").css({"top": pixelOffset.y - 70 , "left" : pixelOffset.x , "display" : "block" });
+$("#over_map2").html("<%= j f.file_field :avatar2 %>  Tell us something about the location? <%= j f.text_area :avatar2_desc , :class => "form-control" %>  ");
+break;
+
+case 4:
+$("#over_map3").css({"top": pixelOffset.y - 70 , "left" : pixelOffset.x , "display" : "block" });
+$("#over_map3").html("<%= j f.file_field :avatar3 %>  Tell us something about the location? <%= j f.text_area :avatar3_desc , :class => "form-control" %>  ");
+break;
+
+case 5:
+$("#over_map4").css({"top": pixelOffset.y - 70 , "left" : pixelOffset.x , "display" : "block" });
+$("#over_map4").html("<%= j f.file_field :avatar4 %>  Tell us something about the location? <%= j f.text_area :avatar4_desc , :class => "form-control" %> ");
+break;
+
+case 6:
+$("#over_map5").css({"top": pixelOffset.y - 70 , "left" : pixelOffset.x , "display" : "block" });
+$("#over_map5").html("<%= j f.file_field :avatar5 %>  Tell us something about the location? <%= j f.text_area :avatar5_desc , :class => "form-control" %> ");
+break;
+
+case 7:
+$("#over_map6").css({"top": pixelOffset.y - 70 , "left" : pixelOffset.x , "display" : "block" });
+$("#over_map6").html("<%= j f.file_field :avatar6 %>   Tell us something about the location? <%= j f.text_area :avatar6_desc , :class => "form-control" %>");
+break;
+
+}
+console.log(pixelOffset);
+        });
+
+       
+
+
+
+        var input = /** @type {!HTMLInputElement} */(
+            document.getElementById('pac-input'));
+
+       
+
+        var autocomplete = new google.maps.places.Autocomplete(input);
+        autocomplete.bindTo('bounds', map);
+
+
+          
+
+
+        autocomplete.addListener('place_changed', function() {
+
+
+
+        	
+          var place = autocomplete.getPlace();
+          if (!place.geometry) {
+            // User entered the name of a Place that was not suggested and
+            // pressed the Enter key, or the Place Details request failed.
+            window.alert("No details available for input: '" + place.name + "'");
+            return;
+          }
+
+          // If the place has a geometry, then present it on a map.
+          if (place.geometry.viewport) {
+            map.fitBounds(place.geometry.viewport);
+          } else {
+            map.setCenter(place.geometry.location);
+            map.setZoom(17);  // Why 17? Because it looks good.
+          }
+         
+          
+          //place.geometry.location
+         // console.log(place.geometry.location);
+        });
+
+        // Sets a listener on a radio button to change the filter type on Places
+        // Autocomplete.
+       
+
+      
+      }
+
+       function addMarker(location, map) {
+        // Add the marker at the clicked location, and add the next-available label
+        // from the array of alphabetical characters.
+        var marker = new google.maps.Marker({
+          position: location,
+          label: labels[labelIndex++ % labels.length],
+          map: map
+        });
+        markers.push(marker);
+        return marker
+         
+      }
+      function clearMarker()
+      {
+                while(markers.length) { markers.pop().setMap(null); }
+        $(".overmap").css("display" , "none");
+        labelIndex = 0;
+               poly.setMap(null);
+
+
+
+      }
+      function calculateAndDisplayRoute(directionsService, directionsDisplay, origin , destination) {
+        directionsService.route({
+          origin: origin,
+          destination: destination,
+          travelMode: 'DRIVING'
+        }, function(response, status) {
+          if (status === 'OK') {
+            directionsDisplay.setDirections(response);
+          } else {
+            window.alert('Directions request failed due to ' + status);
+          }
+        });
+      }
+
+            google.maps.event.addDomListener(window, 'load', initialize);
+
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDdIEvML4-I3Hs08cbmWc-GbXFyF-gMIj0&libraries=places&callback=initMap"
+        async defer></script>
+         <%= f.submit "Create Phony" , :class => "btn btn-primary pull-right" %>
+         <% end %>
+
+        </div>

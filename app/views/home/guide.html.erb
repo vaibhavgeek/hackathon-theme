@@ -1,0 +1,68 @@
+      <div class="col-md-6 col-xs-12 col-md-offset-3 panel well">
+      <form onsubmit="times(); return false">
+<h4>Hello, <%= current_user.name %>.  Here is what you can do in <input size="2" width="5px" id="ttb" type="text">
+ </input> hours in Vellore.   </h4>
+ </form>
+ <ul id="plus5" style="display: none;"> 
+
+<li> 
+You can see, the Amirithu Zoology Park. <br/> 
+<b> [ 2 hours approximate users time taken ] </b> <br/>
+(~22 minutes drive from your current location) 
+</li>
+
+<br/>
+<li> 
+There is a tech meetup at Vellore Institue of Technology. <br/>
+<b>  [ 1.5 hours meetup time] </b> <br/>
+(~15 minutes drive from Amiruthu Zoology Park and ~30 minute drive from your current location ) 
+</li>
+
+<li>
+Outdoor volleyball is amusemnt park located at Bagayam.
+<b> Usual session is of 2 hours </b>
+
+ It is 45 mins away from your curent location and 30 minutes from Vellore Institute of Technology
+</li>
+
+ </ul>
+
+  <ul id="minus5" style="display: none;"> 
+
+<li> 
+You can see, the Amirithu Zoology Park. <br/> 
+<b> [ 2 hours approximate users time taken ] </b> <br/>
+(~22 minutes drive from your current location) 
+</li>
+
+<br/>
+<li> 
+There is a tech meetup at Vellore Institue of Technology. <br/>
+<b>  [ 1.5 hours meetup time] </b> <br/>
+(~15 minutes drive from Amiruthu Zoology Park and ~30 minute drive from your current location ) 
+</li>
+
+ </ul>
+</div>
+<script type="text/javascript">
+	function times()
+	{
+		b = $("#ttb").val()
+		a = parseInt(b)
+		console.log(a);
+		if(a>5)
+			{
+			
+					$('#plus5').css('display','block');
+						$('#minus5').css('display','none');
+			 }
+		else
+		{
+			$('#minus5').css('display','block');
+			$('#plus5').css('display','none');
+			
+
+		}
+	}
+
+</script>

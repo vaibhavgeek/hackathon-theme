@@ -13,7 +13,13 @@ body
 	    background-image: url(https://assets.ubuntu.com/v1/f4cb93a3-Yakkety_Yak-Wallpaper_aubergine.jpg);
     background-size: cover;
 }
-
+@media (max-width: 768px) {
+    h1{
+    font-size: 19px;
+    padding:0 !important;
+    margin: 0 px;
+    }
+}
 .basic-padding 
 {
 	padding: 20px;

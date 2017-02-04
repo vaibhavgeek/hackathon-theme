@@ -1,7 +1,6 @@
 <div class="container">
 <div class="col-md-2 col-md-offset-2 col-xs-3">
-
-<%= image_tag @user.image , :class => 'img-responsive'%>
+<%= image_tag @user.image.to_s + "?width=80" , :class => 'img-responsive'%>
 
 </div>
 
@@ -9,7 +8,10 @@
 <div class="panel">
 <h1><%= @user.name %></h1>
 <% if @user.provider.to_s == "google_oauth2" %>
-<a class="btn btn-social-icon btn-google" href="https://plus.google.com/<%= @user.uid  %>"><span class="fa fa-google"></span></a><% end %>
+<a class="btn btn-social-icon btn-google" href="https://plus.google.com/<%= @user.uid  %>"><span class="fa fa-google"></span></a>
+
+<% else %>
+<a class="btn btn-social-icon btn-facebook" href="https://facebook.com/<%= @user.uid  %>"><span class="fa fa-facebook"></span></a><% end %>
 
 </div>
 </div>
@@ -17,10 +19,39 @@
 <div class="container">
 <div class="col-md-8 col-md-offset-2 col-xs-12">
 <div class="panel">
-<h1><%= @user.name %></h1>
-<%= @user.username %>
-<p>Find me in app/views/users/show.html.erb</p>
-<%= @user.uid %>
+<h3>Places visited by 
+<%= @user.name %></h3>
+<% if @places.count > 0 %> 
+<div class="row">
+
+<% @places.each do |place| %> 
+<%= link_to vacation_path(place) do %>
+<div class="col-md-6">
+<h3> @Mumbai, Maharashtra, India</h3>
+<%= image_tag place.avatar.url , :class => "img-responsive" %> <br/> 
+<p class="text-muted"> <%= place.description %> </p>
+<br/>
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.8&appId=929211633800793";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+<div class="fb-share-button" data-href="http://localhost:3000/" data-layout="button_count" data-size="large" data-mobile-iframe="false"><a class="fb-xfbml-parse-ignore btn-social btn-facebook	btn" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&amp;src=sdkpreparse">f share</a>
+<a class="btn btn-primary pull-right" > Buy print out </a>
+
+</div>
+
+
+</div>
+<% end %>
+<% end %>
+</div>
+
+
+<% end %>
 </div>
 </div>
 </div>
